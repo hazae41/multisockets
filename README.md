@@ -32,8 +32,6 @@ socket.onConversation("/test/hello"){
 
 socket.start()
 
-socket.connectTo("192.168.1.1:25590")
-
 socket.onConnection{ name ->
     if(name == "mysocket"){
         conversation("/test/hello"){
@@ -41,5 +39,7 @@ socket.onConnection{ name ->
         }
     }
 }
+
+socket.connectTo("192.168.1.1:25590")
 
 ```
