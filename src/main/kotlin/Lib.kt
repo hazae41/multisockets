@@ -97,19 +97,17 @@ fun Connection.request(
     callback: suspend (String) -> Unit = {}
 ) = conversation(path){
     if(data != null) send(data)
-    val message = readMessage()
-    if(message != null) callback(message)
+    callback(readMessage())
 }
 
-suspend fun WebSocketSession.readMessage(): String? {
-    val text = incoming.receive() as? Frame.Text
-    return text?.readText()
+suspend fun WebSocketSession.readMessage(): String {
+    val text = incoming.receive() as Frame.Text
+    return text.readText()
 }
 
 suspend fun WebSocketSession.onMessage(handler: suspend (String) -> Unit) {
     incoming.consumeEach {
-        val text = (it as? Frame.Text)?.readText()
-        if (text != null) handler(text)
+        handler((it as Frame.Text).readText())
     }
 }
 
