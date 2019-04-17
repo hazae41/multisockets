@@ -9,8 +9,6 @@
 val key = AES.generateKey() // AES.toKey(keyStr)
 val socket = Socket("mysocket", 25590, key)
 
-socket.connectTo("192.168.1.1:25590")
-
 // Create WebSocket route
 socket.onConversation("/test/hello"){
 
@@ -32,6 +30,10 @@ socket.onConversation("/test/hello"){
     send("Hello world!".encrypt()) 
 }
 
+socket.start()
+
+socket.connectTo("192.168.1.1:25590")
+
 socket.onConnection{ name ->
     if(name == "mysocket"){
         conversation("/test/hello"){
@@ -39,7 +41,5 @@ socket.onConnection{ name ->
         }
     }
 }
-
-socket.start()
 
 ```
