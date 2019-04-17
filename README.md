@@ -7,7 +7,9 @@
 ```kotlin
 // Generate an AES key (you can also load it from a string)
 val key = AES.generateKey() // AES.toKey(keyStr)
-val socket = Socket("mysocket", "192.168.1.1:25590", key)
+val socket = Socket("mysocket", 25590, key)
+
+socket.connectTo("192.168.1.1:25590")
 
 // Create WebSocket route
 socket.onConversation("/test/hello"){
@@ -29,4 +31,15 @@ socket.onConversation("/test/hello"){
     // Send encrypted message
     send("Hello world!".encrypt()) 
 }
+
+socket.onConnection{ name ->
+    if(name == "mysocket"){
+        conversation("/test/hello"){
+            send("It works!")
+        }
+    }
+}
+
+socket.start()
+
 ```
