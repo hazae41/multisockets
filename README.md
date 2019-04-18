@@ -32,9 +32,9 @@ socket.onConversation("/test/hello"){
 
 socket.start()
 
-socket.connectTo("192.168.1.1:25590")
+val test = Connection("192.168.1.1", 25590)
 
-socket.conversation("/test/hello"){
+test.conversation("/test/hello"){
     send("It works!")
 }
 

@@ -21,9 +21,11 @@ open class Socket(
 
 fun Socket.start() {
     engine = embeddedServer(ServerCIO, port){
-        install(io.ktor.websocket.WebSockets)
+        install(ServerWebSockets)
         routing{
-            routes.forEach{ (path, block) -> webSocket(path = path, handler = block) }
+            routes.forEach{
+                (path, block) -> webSocket(path = path, handler = block)
+            }
         }
     }.start()
 }

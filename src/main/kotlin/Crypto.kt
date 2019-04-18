@@ -36,11 +36,6 @@ object AES {
     fun toString(key: SecretKey) = B64.to(key.encoded)
 }
 
-fun String.aes(): SecretKey {
-    if(isBlank()) return AES.generate()
-    return AES.toKey(this)
-}
-
 fun aes(key: SecretKey?): Pair<String.() -> String, String.() -> String> {
     fun encrypt(message: String) = if(key == null) message else AES.encrypt(message, key)
     fun decrypt(message: String) = if(key == null) message else AES.decrypt(message, key)
