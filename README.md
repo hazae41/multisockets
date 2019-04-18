@@ -32,14 +32,11 @@ socket.onConversation("/test/hello"){
 
 socket.start()
 
-socket.onConnection{ name ->
-    if(name == "mysocket"){
-        conversation("/test/hello"){
-            send("It works!")
-        }
-    }
+socket.connectTo("192.168.1.1:25590")
+
+socket.conversation("/test/hello"){
+    send("It works!")
 }
 
-socket.connectTo("192.168.1.1:25590")
 
 ```
