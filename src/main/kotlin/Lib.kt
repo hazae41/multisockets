@@ -54,9 +54,8 @@ open class Socket(
 
     val connections = mutableMapOf<String, Connection>()
     
-    fun connectTo(name: String, address: String) = GlobalScope.launch{
+    fun connectTo(name: String, address: String){
         connections[name] = Connection(address)
-        it(connection, name)
     }
 
     fun connectTo(peers: Map<String, String>) {
