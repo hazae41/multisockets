@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'hazae41'
-version '5.0'
+version '6.1.1'
 
 apply from: 'ktor.gradle'
 
