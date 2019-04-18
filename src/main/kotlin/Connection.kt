@@ -9,7 +9,7 @@ import io.ktor.http.cio.websocket.send
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-open class Connection(val host: String, val port: Int)
+data class Connection(val host: String, val port: Int)
 
 fun Connection.conversation(path: String, block: ClientWebSocketHandler) = GlobalScope.launch {
     val client = HttpClient(CIO).config { install(WebSockets) }
