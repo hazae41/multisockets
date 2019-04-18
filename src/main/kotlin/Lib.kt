@@ -53,32 +53,14 @@ open class Socket(
     }
 
     val connections = mutableMapOf<String, Connection>()
-    val connectionsNotifiers = mutableListOf<ConnectionNotifier>()
-
-    fun onConnection(filter: String? = null, block: ConnectionNotifier){
-        connectionsNotifiers += { name ->
-            if(filter == null || name == filter) block(name)
-        }
+    
+    fun connectTo(name: String, address: String) = GlobalScope.launch{
+        connections[name] = Connection(address)
+        it(connection, name)
     }
 
-    fun connectTo(address: String) = GlobalScope.launch{
-        val connection = Connection(address)
-        connection.request("/name"){ name ->
-            connections[name] = connection
-            connectionsNotifiers.forEach{ it(connection, name) }
-        }
-    }
-
-    fun connectTo(peers: List<String>) {
-        peers.forEach{ connectTo(it) }
-    }
-
-    init {
-        onConversation("/name") { send(name) }
-        onConversation("/peers") {
-            val peers = connections.values.map { it.address }
-            send(peers.joinToString(","))
-        }
+    fun connectTo(peers: Map<String, String>) {
+        peers.entries.forEach{ name, address -> connectTo(name, address) }
     }
 }
 
