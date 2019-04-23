@@ -4,6 +4,7 @@ import io.ktor.application.install
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
+import io.ktor.websocket.DefaultWebSocketServerSession
 import io.ktor.websocket.webSocket
 import java.util.concurrent.TimeUnit
 import javax.crypto.SecretKey
@@ -11,8 +12,10 @@ import io.ktor.client.features.websocket.WebSockets as ClientWebSockets
 import io.ktor.server.cio.CIO as ServerCIO
 import io.ktor.websocket.WebSockets as ServerWebSockets
 
+typealias ServerWebSocketHandler = suspend DefaultWebSocketServerSession.() -> Unit
+
 open class Socket(
-    val port: Int, val key: SecretKey? = null
+    val port: Int
 ) {
     lateinit var engine: ApplicationEngine
     val routes = mutableMapOf<String, ServerWebSocketHandler>()
@@ -45,5 +48,3 @@ fun Socket.connectTo(peers: Map<String, Connection>) =
 
 fun Socket.connectTo(name: String, host: String, port: Int) =
     Connection(host, port).also{ connectTo(name, it) }
-
-fun Socket.aes() =  aes(key)

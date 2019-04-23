@@ -2,15 +2,24 @@
 
 [Go to JitPack](https://jitpack.io/#hazae41/multisockets)
 
+Compatible with ws protocol but not wss
+
+Messages are encrypted with AES and keys are sent with RSA
+
+Encryption prevent man-in-the-middle attacks but do not prevent a third party from connecting to you
+
+**You must add password protection if you want to restrict who can connect to you**
+
 ### Usage
 
 ```kotlin
-// Generate an AES key (you can also load it from a string)
-val key = AES.generateKey() // AES.toKey(keyStr)
-val socket = Socket("mysocket", 25590, key)
+val socket = Socket("mysocket", 25590)
 
 // Create WebSocket route
 socket.onConversation("/test/hello"){
+
+    // Get crypto functions
+    val (encrypt, decrypt) = aes()
 
     // Read unencrypted message
     val message1 = readMessage()
@@ -18,9 +27,6 @@ socket.onConversation("/test/hello"){
 
     // Send unencrypted message
     send("Hello world!") 
-    
-    // Get crypto functions from the key
-    val (encrypt, decrypt) = socket.aes()
     
     // Read encrypted message
     val message2 = readMessage()?.decrypt()

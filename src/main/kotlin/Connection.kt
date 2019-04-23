@@ -2,12 +2,15 @@ package hazae41.sockets
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.features.websocket.DefaultClientWebSocketSession
 import io.ktor.client.features.websocket.WebSockets
 import io.ktor.client.features.websocket.ws
 import io.ktor.http.HttpMethod
 import io.ktor.http.cio.websocket.send
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
+typealias ClientWebSocketHandler = suspend DefaultClientWebSocketSession.() -> Unit
 
 data class Connection(val host: String, val port: Int)
 
