@@ -1,12 +1,16 @@
 package hazae41.sockets
 
 import io.ktor.application.install
+import io.ktor.network.tls.certificates.generateCertificate
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.applicationEngineEnvironment
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.engine.sslConnector
+import io.ktor.server.jetty.Jetty
 import io.ktor.websocket.DefaultWebSocketServerSession
 import io.ktor.websocket.webSocket
+import java.io.File
 import java.util.concurrent.TimeUnit
 import io.ktor.client.features.websocket.WebSockets as ClientWebSockets
 import io.ktor.websocket.WebSockets as ServerWebSockets
@@ -21,15 +25,25 @@ open class Socket(
     val connections = mutableMapOf<String, Connection>()
 }
 
-fun Socket.start() {
-    engine = embeddedServer(Netty, port){
-        install(ServerWebSockets)
-        routing{
-            routes.forEach{
-                (path, block) -> webSocket(path = path, handler = block)
+fun Socket.start(folder: File = File(".")) = let { socket ->
+    val keyStoreFile = File(folder, "ssl.jks")
+    val keyStore = generateCertificate(keyStoreFile)
+
+    engine = embeddedServer(Jetty, applicationEngineEnvironment  {
+        val changeit = { "changeit".toCharArray() }
+        sslConnector(keyStore, "mykey", changeit, changeit) {
+            port = socket.port
+            keyStorePath = keyStoreFile.absoluteFile
+        }
+        module {
+            install(ServerWebSockets)
+            routing{
+                routes.forEach{
+                    (path, block) -> webSocket(path = path, handler = block)
+                }
             }
         }
-    }.start()
+    }).start()
 }
 
 fun Socket.stop() = engine.stop(0, 0, TimeUnit.SECONDS)
