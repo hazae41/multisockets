@@ -4,7 +4,7 @@ import io.ktor.application.install
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.jetty.Jetty
 import io.ktor.websocket.DefaultWebSocketServerSession
 import io.ktor.websocket.webSocket
 import java.util.concurrent.TimeUnit
@@ -22,7 +22,7 @@ open class Socket(
 }
 
 fun Socket.start() {
-    engine = embeddedServer(Netty, port){
+    engine = embeddedServer(Jetty, port){
         install(ServerWebSockets)
         routing{
             routes.forEach{
