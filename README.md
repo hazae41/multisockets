@@ -2,9 +2,9 @@
 
 [Go to JitPack](https://jitpack.io/#hazae41/multisockets)
 
-Compatible with ws protocol but not wss
+Compatible with wss protocol only
 
-Messages are encrypted with AES and keys are sent with RSA
+Messages are encrypted with SSL
 
 Encryption prevent man-in-the-middle attacks but do not prevent a third party from connecting to you
 
