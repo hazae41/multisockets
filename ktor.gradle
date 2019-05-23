@@ -12,4 +12,5 @@ dependencies {
     compile "io.ktor:ktor-client-core:$ktor_version"
     compile "io.ktor:ktor-client-apache:$ktor_version"
     compile "io.ktor:ktor-websockets:$ktor_version"
+    compile "io.ktor:ktor-network-tls:$ktor_version"
 }
