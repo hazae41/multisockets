@@ -18,22 +18,11 @@ val socket = Socket("mysocket", 25590)
 // Create WebSocket route
 socket.onConversation("/test/hello"){
 
-    // Get crypto functions
-    val (encrypt, decrypt) = aes()
-
-    // Read unencrypted message
+    // Read message
     val message1 = readMessage()
     if(message1 != null) println(message1)
 
-    // Send unencrypted message
     send("Hello world!") 
-    
-    // Read encrypted message
-    val message2 = readMessage()?.decrypt()
-    if(message2 != null) println(message2)
-    
-    // Send encrypted message
-    send("Hello world!".encrypt()) 
 }
 
 socket.start()
