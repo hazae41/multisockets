@@ -1,7 +1,7 @@
 package hazae41.sockets
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.jetty.Jetty
+import io.ktor.client.engine.apache.Apache
 import io.ktor.client.features.websocket.DefaultClientWebSocketSession
 import io.ktor.client.features.websocket.WebSockets
 import io.ktor.client.features.websocket.ws
@@ -15,7 +15,7 @@ typealias ClientWebSocketHandler = suspend DefaultClientWebSocketSession.() -> U
 data class Connection(val host: String, val port: Int)
 
 fun Connection.conversation(path: String, block: ClientWebSocketHandler) = GlobalScope.launch {
-    val client = HttpClient(Jetty).config { install(WebSockets) }
+    val client = HttpClient(Apache).config { install(WebSockets) }
     client.ws(HttpMethod.Get, host = host, port = port, path = path, block = block)
 }
 
