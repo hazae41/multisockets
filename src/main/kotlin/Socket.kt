@@ -4,12 +4,11 @@ import io.ktor.application.install
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import io.ktor.websocket.DefaultWebSocketServerSession
 import io.ktor.websocket.webSocket
 import java.util.concurrent.TimeUnit
-import javax.crypto.SecretKey
 import io.ktor.client.features.websocket.WebSockets as ClientWebSockets
-import io.ktor.server.cio.CIO as ServerCIO
 import io.ktor.websocket.WebSockets as ServerWebSockets
 
 typealias ServerWebSocketHandler = suspend DefaultWebSocketServerSession.() -> Unit
@@ -23,7 +22,7 @@ open class Socket(
 }
 
 fun Socket.start() {
-    engine = embeddedServer(ServerCIO, port){
+    engine = embeddedServer(Netty, port){
         install(ServerWebSockets)
         routing{
             routes.forEach{
