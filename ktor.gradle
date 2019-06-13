@@ -4,7 +4,7 @@ repositories {
     maven { url 'https://kotlin.bintray.com/ktor' }
 }
 
-def ktor_version = "1.2.0"
+def ktor_version = "1.2.1"
 
 dependencies {
     compile "io.ktor:ktor-server-core:$ktor_version"
